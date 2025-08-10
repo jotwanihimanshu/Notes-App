@@ -1,9 +1,7 @@
 import axios from "axios";
-
+const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5001/api" : "/api";
 const api = axios.create({
-    baseURL: process.env.NODE_ENV === 'production' 
-        ? '/api'  // Production: same domain
-        : 'http://localhost:5001/api'  // Development: separate server
+    baseURL: BASE_URL,
 })
 
 export default api
