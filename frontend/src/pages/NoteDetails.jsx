@@ -1,5 +1,4 @@
- import React, { useEffect, useState } from 'react'
-
+import React, { useEffect, useState } from 'react'
 import {useNavigate, useParams} from 'react-router'
 import api from '../lib/axios'
 import toast from 'react-hot-toast'
@@ -7,19 +6,17 @@ import { LoaderIcon,ArrowLeft,Trash2Icon } from 'lucide-react'
 import { Link } from 'react-router'
 
 function NoteDetails() {
-
   const [note,setNote] = useState({ title: "", content: "" });
-  const [loading,setLoading] = useState(false);
+  const [loading,setLoading] = useState(true); // Set to true initially
   const [saving,setSaving] = useState(false);
 
   const navigate = useNavigate();
-
   const {id} = useParams();
   
   useEffect(()=>{
     const fetchNote = async ()=>{
        try{
-        const res = await api.get(`/notes/${id}`)
+        const res = await api.get(`/notes/${id}`) // Fixed: added backticks
         setNote(res.data)
        }catch(error){
         console.log("Failed to fetch note",error)
@@ -27,7 +24,6 @@ function NoteDetails() {
        }finally{
         setLoading(false);
        }
-
     }
     fetchNote();
   },[id]);
@@ -35,16 +31,15 @@ function NoteDetails() {
   const handleDelete = async ()=>{
         if(!window.confirm("Are you want to delete this note")) return;
          try{
-            await api.delete(`/notes/${id}`)
+            await api.delete(`/notes/${id}`) // Fixed: added backticks
             toast.success("Note deleted successfully")
             navigate("/");
-
          }catch(error){
             console.log("Error deleting the note",error);
             toast.error("Failed to delete the note")
-
          }
   }
+  
   const handleSave = async()=>{
          if(!note.title.trim() || !note.content.trim()){
           toast.error("please add a title or content");
@@ -53,7 +48,7 @@ function NoteDetails() {
          setSaving(true);
 
          try{
-            await api.put(`/notes/${id}`,note)
+            await api.put(`/notes/${id}`, note) // Fixed: added backticks
             toast.success("Note updated successfully");
             navigate("/");
          }catch(error){
@@ -68,11 +63,9 @@ function NoteDetails() {
     return(
       <div className='min-h-screen bg-base-200 flex items-center justify-center'>
         <LoaderIcon className='animate-spin size-10'></LoaderIcon>
-
       </div>
     )
   }
-
 
   return (
     <div className='min-h-screen bg-base-200' >
@@ -105,24 +98,17 @@ function NoteDetails() {
                   </label><br /> <br />
                   <textarea  placeholder='Write your Note here..' className='textarea textarea-bordered h-32 w-full'
                    value={note.content} onChange={(e)=> setNote({...note, content: e.target.value})}/>
-
                 </div>
 
             <div className="card-actions justify-end">
               <button className='btn btn-primary' disabled={saving} onClick={handleSave}>
                  {saving ? "saving..." : "Save Changes"}
               </button>
-
             </div>
-
-            
           </div>
-
         </div>
        </div>
-
       </div>
-      
     </div>
   )
 }

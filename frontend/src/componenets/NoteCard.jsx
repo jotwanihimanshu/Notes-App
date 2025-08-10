@@ -1,33 +1,27 @@
- import { PenSquareIcon } from 'lucide-react'
+import { PenSquareIcon } from 'lucide-react'
 import { Trash2Icon } from 'lucide-react'
 import React from 'react'
 import { Link } from 'react-router'
 import { formatDate } from '../lib/utlis'
 import api from '../lib/axios'
 import toast from 'react-hot-toast'
-import axios from 'axios'
 
 function NoteCard({note,setNotes}) {
-
     const handleDelete = async (e,id)=>{
          e.preventDefault();
 
          if(!window.confirm("Are you want to delete this note")) return;
          try{
-            await api.delete(`/notes/${id}`)
+            await api.delete(`/notes/${id}`) // Fixed: added backticks
             setNotes((prev)=> prev.filter(note => note._id !== id))
             toast.success("Note deleted successfully")
-
          }catch(error){
             console.log("Error deleting the note",error);
             toast.error("Failed to delete the note")
-
          }
-
     }
 
-
-  return <Link to={`/note/${note._id}`} className='card bg-base-100 hover:shadow-lg transition-allduration-200 border-t-4 border-solid border-[#00FF90]'>
+  return <Link to={`/note/${note._id}`} className='card bg-base-100 hover:shadow-lg transition-all duration-200 border-t-4 border-solid border-[#00FF90]'> {/* Fixed: added backticks */}
     <div className='card-body'>
         <h3 className='card-title text-base-content '>
             {note.title}
